@@ -12,7 +12,7 @@ tags:
 
 ## 概览
 
->freedom is not free
+>简要概括
 
 ![jiantan](/img/in-post/post-js-version/jiantan.png)
 

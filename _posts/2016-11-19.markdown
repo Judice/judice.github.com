@@ -1,13 +1,13 @@
 ---
-layout: post
-title: "简谈前端后端"
-subtitle: "前端后端的基本概括"
-date:   2016-11-19
-author: "Aaron"
-header-img:"img/home-bg.jpg"
+layout:     post
+title:      "前端后端的区别"
+subtitle:   "前端后端的简述"
+date:       2016-11-19
+author:     “Aaron”
+header-img: "img/home-bg.jpg"
 tags:
-    -前端
-    -后端
+    - 前端
+    - 后端
 ---
 ##概览
 前端知识：HTML，CSS，JavaScript，jQuery，Bootstrap

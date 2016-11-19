@@ -37,6 +37,7 @@ tags:
 * 浏览器向Google的服务器发送一个http请求
 * 服务器使用一个http响应，把显示这个网页所需要的资源传回给了浏览器
 ![google](/img/in-post/post-js-version/google.jpg)
+
 可以通过Chrome浏览器的开发者工具来进一步观察HTTP协议的运行情况；
 
 上图为Google的HTTP协议运行情况，关键部分为：

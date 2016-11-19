@@ -68,7 +68,7 @@ ga_domain:
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "于是我们奋力向前，逆水行舟，却被不断向后推，直到回到往昔岁月"
+sidebar-about-description: "Unbowed Unbent Unbroken"
 sidebar-avatar: /img/avatar-jud.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
@@ -82,19 +82,19 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 # Friends
 friends: [
     {
-        title: "My Blog",
+        title: "Aaron",
         href: "https://judice.github.io"
     },{
-        title: "Foo",
+        title: "Stark",
         href: "#"
     },{
-        title: "Bar",
+        title: "Lannister",
         href: "#"
     },{
-        title: "Example Friends",
+        title: "Baratheon",
         href: "#"
     },{
-        title: "It helps SEO",
+        title: "Martell",
         href: "#"
     }
 ]

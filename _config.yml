@@ -12,7 +12,7 @@ baseurl: "/judice.github.com"         # for example, '/blog' if your blog hosted
 
 # SNS settings
 RSS: false
-#weibo_username:     非常沒想法
+#weibo_username:
 #zhihu_username:
 #github_username: Judice
 #twitter_username:
@@ -68,7 +68,7 @@ ga_domain:
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "写写代码，世界那么大，多玩玩看看。"
+sidebar-about-description: "于是我们奋力向前，逆水行舟，却被不断向后推，直到回到往昔岁月"
 sidebar-avatar: /img/avatar-jud.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 

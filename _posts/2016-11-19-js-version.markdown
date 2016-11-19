@@ -4,7 +4,7 @@ title:      "前端后端的区别"
 subtitle:   "前端后端的简述"
 date:       2016-11-19
 author:     “Aaron”
-header-img: "img/home-bg.jpg"
+header-img: "img/post-01.jpg"
 tags:
     - 前端
     - 后端

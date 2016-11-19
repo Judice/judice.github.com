@@ -100,7 +100,7 @@ header-img: "img/about-bg.jpg"
 {% endif %}
 
 
-#{% if site.disqus_username %}
+{% if site.disqus_username %}
 <!-- disqus 评论框 start -->
 <div class="comment">
     <div id="disqus_thread" class="disqus-thread">
@@ -123,4 +123,4 @@ header-img: "img/about-bg.jpg"
     })();
 </script>
 <!-- disqus 公共JS代码 end -->
-#{% endif %}
+{% endif %}

@@ -1,6 +1,6 @@
 # Site settings
 title: Aaron Blog
-SEOTitle: Judice | My Blog
+SEOTitle: Aaron | Judice
 header-img: img/home-bg.jpg
 email: eciduj@gmail.com
 description: "一生想做自由极客"
@@ -12,11 +12,11 @@ baseurl: "/judice.github.com"         # for example, '/blog' if your blog hosted
 
 # SNS settings
 RSS: false
-weibo_username:     非常沒想法
-zhihu_username:     你有藥嗎
-github_username:    Judice
-#twitter_username:  
-#facebook_username:  
+#weibo_username:     非常沒想法
+#zhihu_username:     你有藥嗎
+#github_username:    Judice
+#twitter_username:
+#facebook_username:
 
 
 
@@ -50,7 +50,7 @@ kramdown:
 #disqus_username: _your_disqus_short_name_
 
 # Duoshuo settings
-duoshuo_username: myblog
+duoshuo_username:
 # Share component is depend on Comment so we can NOT use share only.
 duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
@@ -62,7 +62,7 @@ duoshuo_share: true                     # set to false if you want to use Commen
 ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
 # Google Analytics
 ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: 
+ga_domain:
 
 
 

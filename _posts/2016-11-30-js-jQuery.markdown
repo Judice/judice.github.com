@@ -18,7 +18,7 @@ $("#textbox").hover(
         this.title = "Test";
    },
    fucntion() {
-       this.title = "OK”;
+       this.title = "OK";
    }
 );
 ```

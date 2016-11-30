@@ -27,10 +27,10 @@ $("#textbox").hover(
 但是如果将this换成$(this)就不是那回事了。
 
 ```js
-Error Code：
+Error Code:
 $("#textbox").hover(
        function() {
-          $(this).title ＝ "Test";
+          $(this).title = "Test";
        },
        function() {
           $(this).title = "OK";
@@ -47,10 +47,10 @@ JQuery拥有attr()方法可以get/set DOM对象的属性，所以正确的写法
 ```js
 $("#textbox").hover(
       function() {
-         $(this).attr(’title’, ‘Test’);
+         $(this).attr('title', 'Test');
       },
       function() {
-         $(this).attr(’title’, ‘OK’);
+         $(this).attr('title', 'OK');
       }
 );
 ```

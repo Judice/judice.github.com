@@ -1,13 +1,139 @@
 ---
 layout:     post
-title:      "python的super()用法"
+title:      "python的super用法"
 subtitle:   "super用法"
 date:       2016-12-02
 author:     “Aaron”
 header-img: "img/post-04.jpg"
 tags:
     - python
-    - super（）
+    - super用法
 ---
 
 ## super()的入门使用
+在类的继承中，重写某个方法，该方法会覆盖父类中的同名方法。但有时我们需要实现父类功能有，也就是调用父类方法，可以通过调用super()来实现，例如:
+
+```python
+# coding=utf-8
+class Animal(object):  # 要使用新类
+    def __init__(self, name):
+        self.name = name
+    def greet(self):
+        print 'I am %s'% self.name
+
+class Dog(Animal):
+     def greet(self):
+         super(Dog, self).greet()
+         print 'Wang,wang'
+```
+在上面，Animal 是父类，Dog 是子类，我们在 Dog 类重定义了 greet 方法，为了能同时实现父类的功能，我们又调用了父类的方法，看下面的使用：
+```python
+dog = Dog('dog')
+dog.greet()
+#I am dog
+#Wang,wang
+```
+super的另一个方法就是子类中调用父类的初始化方法，例如：
+```python
+# coding=utf-8
+class Base(object):
+ def __init__(self, a, b):
+     self.a = a
+     self.b = b
+
+class A(Base):
+ def __init__(self,a,b,c):
+     super(A,self).__init__(a,b)
+     self.c = c
+
+obj = A(1,2,3)
+print obj.a,obj.b,obj.c  #输出1, 2, 3
+```
+
+## 深入super（）
+super方法表面上是获取父类，并调用父类方法，**实质上super方法和父类没有关联**,如下例
+```python
+class Base(object):
+    def __init__(self):
+        print "enter Base"
+        print "leave Base"
+
+class A(Base):
+    def __init__(self):
+        print "enter A"
+        super(A, self).__init__()
+        print "leave A"
+
+class B(Base):
+    def __init__(self):
+        print "enter B"
+        super(B, self).__init__()
+        print "leave B"
+
+class C(A, B):
+    def __init__(self):
+        print "enter C"
+        super(C, self).__init__()
+        print "leave C"
+
+c = C()
+enter C
+enter A
+enter B
+enter Base
+leave Base
+leave B
+leave A
+leave C
+```
+注意enter A的下一句不是enter Base,而是enter B,**python中super方法的运作其实与MRO列表有关**
+
+## MRO列表
+事实上,对于你定义的每一个类,Python会计算出一个方法解析顺序(Method Resolution Order, MRO)列表,它代表了类继承的顺序,我们可以使用下面的方式获得某个类的 MRO 列表：
+```python
+print C.mro()  #  或者 C.__mro__   或者 C().__class__.mro()
+[<class '__main__.C'>, <class '__main__.A'>, <class '__main__.B'>, <class '__main__.Base'>, <type 'object'>]
+```
+这个 MRO 列表的顺序通过一个 C3 线性化算法来实现的，这里不去深究这个算法了，总的来说，一个类的 MRO 列表就是合并所有父类的 MRO 列表，并遵循以下三条原则：
+
+* 子类永远在父类前面
+* 如果有多个父类，会根据它们在列表中的顺序被检查
+* 如果对下一个类存在两个合法的选择，选择第一个父类
+
+## super原理
+
+```python
+def super(cls, inst):
+   mro = inst.__class__.mro()
+   return mro[mro.index(cls) + 1]
+```
+
+其中，cls 代表类，inst 代表实例，上面的代码做了两件事：
+
+* 获取 inst 的 MRO 列表
+* 查找 cls 在当前 MRO 列表中的 index, 并返回它的下一个类，即 mro[index + 1]
+
+
+当使用super(cls, inst)时,Python会在inst的MRO列表上搜索cls的下一个类
+
+现在，让我们回到前面的例子
+
+首先看类C的__init__方法：
+```python
+super(C, self).__init__()
+```
+这里的self是当前C的实例,self.__init__.mro()结果是：
+```python
+[__main__.C, __main__.A, __main__.B, __main__.Base, object]
+```
+可以看到C的下一个类是A，于是跳到了A的__init__，这时会打印出 enter A，并执行下面一行代码：
+```python
+super(A, self).__init__()
+```
+注意，这里的 **self也是当前类C的实例**，MRO列表跟上面是一样的，搜索A在MRO中的下一个类，发现是B，于是跳到了B的__init__，这时会打印出 enter B，而不是enter Base
+
+整个过程还是比较清晰的，关键是要理解super的工作方式，而不是想当然地认为super调用了父类的方法。
+
+## 总结
+* super 和父类没有实质性的关联
+* super(cls, inst) 获得的是cls在inst的MRO列表中的下一个类

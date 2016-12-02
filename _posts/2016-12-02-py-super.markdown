@@ -1,0 +1,13 @@
+---
+layout:     post
+title:      "python的super()用法"
+subtitle:   "super用法"
+date:       2016-12-02
+author:     “Aaron”
+header-img: "img/post-04.jpg"
+tags:
+    - python
+    - super（）
+---
+
+## super()的入门使用

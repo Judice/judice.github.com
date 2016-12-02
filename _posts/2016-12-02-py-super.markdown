@@ -27,6 +27,7 @@ class Dog(Animal):
          print 'Wang,wang'
 ```
 在上面，Animal 是父类，Dog 是子类，我们在 Dog 类重定义了 greet 方法，为了能同时实现父类的功能，我们又调用了父类的方法，看下面的使用：
+
 ```python
 dog = Dog('dog')
 dog.greet()
@@ -34,6 +35,7 @@ dog.greet()
 #Wang,wang
 ```
 super的另一个方法就是子类中调用父类的初始化方法，例如：
+
 ```python
 # coding=utf-8
 class Base(object):
@@ -51,7 +53,8 @@ print obj.a,obj.b,obj.c  #输出1, 2, 3
 ```
 
 ## 深入super（）
-super方法表面上是获取父类，并调用父类方法，**实质上super方法和父类没有关联**,如下例
+super方法表面上是获取父类，并调用父类方法，**实质上super方法和父类没有关联**,如下例:
+
 ```python
 class Base(object):
     def __init__(self):
@@ -90,6 +93,7 @@ leave C
 
 ## MRO列表
 事实上,对于你定义的每一个类,Python会计算出一个方法解析顺序(Method Resolution Order, MRO)列表,它代表了类继承的顺序,我们可以使用下面的方式获得某个类的 MRO 列表：
+
 ```python
 print C.mro()  #  或者 C.__mro__   或者 C().__class__.mro()
 [<class '__main__.C'>, <class '__main__.A'>, <class '__main__.B'>, <class '__main__.Base'>, <type 'object'>]
@@ -119,14 +123,17 @@ def super(cls, inst):
 现在，让我们回到前面的例子
 
 首先看类C的__init__方法：
+
 ```python
 super(C, self).__init__()
 ```
-这里的self是当前C的实例,self.__init__.mro()结果是：
+这里的self是当前C的实例,self__init__.mro()结果是：
+
 ```python
 [__main__.C, __main__.A, __main__.B, __main__.Base, object]
 ```
 可以看到C的下一个类是A，于是跳到了A的__init__，这时会打印出 enter A，并执行下面一行代码：
+
 ```python
 super(A, self).__init__()
 ```

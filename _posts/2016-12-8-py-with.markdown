@@ -29,6 +29,7 @@ tags:
 ## 基本语法和工作原理
 
 **with语句的语法格式**
+
 ```python
  with context_expression [as target(s)]:
        with-body
@@ -38,6 +39,7 @@ tags:
 Python 对一些内建对象进行改进，加入了对上下文管理器的支持，可以用于 with 语句中，比如可以自动关闭文件、线程锁的自动获取和释放等。假设要对一个文件进行操作，使用 with 语句可以有如下代码：
 
 **使用 with 语句操作文件对象**
+
 ```python
 with open(r'somefileName') as somefile:
    for line in somefile:
@@ -57,6 +59,7 @@ somefile = open(r'somefileName')
 比较起来，使用 with 语句可以减少编码量，已经加入对上下文管理协议支持的还有模块 threading、decimal 等。
 
 **with 语句执行过程**
+
 ```python
 context_manager = context_expression
     exit = type(context_manager).__exit__  
@@ -99,6 +102,7 @@ True 表示不处理异常，否则会在退出该方法后重新抛出异常以
 假设有一个资源 DummyResource，这种资源需要在访问前先分配，使用完后再释放掉；分配操作可以放到 __enter__() 方法中，释放操作可以放到 __exit__() 方法中。简单起见，这里只通过打印语句来表明当前的操作，并没有实际的资源分配与释放。
 
 **自定义支持 with 语句的对象**
+
 ```python
 class DummyResource:
     def __init__(self, tag):
@@ -122,6 +126,7 @@ __exit__() 方法中对变量 exc_tb 进行检测，如果不为 None，表示�
 下面在 with 语句中访问 DummyResource ：
 
 **使用自定义的支持 with 语句的对象**
+
 ```python
 with DummyResource('Normal'):
         print '[with-body] Run without exceptions.'
@@ -134,6 +139,7 @@ with DummyResource('Normal'):
 第1个 with 语句的执行结果如下：
 
 **with 语句1执行结果**
+
 ```python
 Resource [Normal]
     [Enter Normal]: Allocate resource.
@@ -143,7 +149,8 @@ Resource [Normal]
 ```
 可以看到，正常执行时会先执行完语句体 with-body，然后执行 __exit__() 方法释放资源。
 
-第2个 with 语句的执行结果如下：
+**第2个 with 语句的执行结果如下**：
+
 ```python
 Resource [With-Exception]
  [Enter With-Exception]: Allocate resource.
@@ -167,6 +174,7 @@ contextlib 模块提供了3个对象：装饰器 contextmanager、函数 nested 
 contextmanager 用于对生成器函数进行装饰，生成器函数被装饰以后，返回的是一个上下文管理器，其 __enter__() 和 __exit__() 方法由 contextmanager 负责提供，而不再是之前的迭代子。被装饰的生成器函数只能产生一个值，否则会导致异常 RuntimeError；产生的值会赋值给 as 子句中的 target，如果使用了 as 子句的话。下面看一个简单的例子。
 
 **装饰器 contextmanager 使用示例**
+
 ```python
 from contextlib import contextmanager
 
@@ -183,6 +191,7 @@ from contextlib import contextmanager
 ```
 
 结果输出如下:
+
 ```python
 [Allocate resources]
     Code before yield-statement executes in __enter__
@@ -198,6 +207,7 @@ from contextlib import contextmanager
 nested 可以将多个上下文管理器组织在一起，避免使用嵌套 with 语句。
 
 **nested 语法**
+
 ```python
 with nested(A(), B(), C()) as (X, Y, Z):
        # with-body code here
@@ -205,6 +215,7 @@ with nested(A(), B(), C()) as (X, Y, Z):
 类似于：
 
 **nested 执行过程**
+
 ```python
 with A() as X:
         with B() as Y:
@@ -217,6 +228,7 @@ with A() as X:
 closing 的实现如下：
 
 **上下文管理 closing 实现**
+
 ```python
 class closing(object):
         # help doc here
@@ -230,6 +242,7 @@ class closing(object):
 上下文管理器会将包装的对象赋值给 as 子句的 target 变量，同时保证打开的对象在 with-body 执行完后会关闭掉。closing 上下文管理器包装起来的对象必须提供 close() 方法的定义，否则执行时会报 AttributeError 错误。
 
 **自定义支持 closing 的对象**
+
 ```python
 class ClosingDemo(object):
         def __init__(self):
@@ -247,6 +260,7 @@ class ClosingDemo(object):
 结果输出如下：
 
 **自定义 closing 对象的输出结果**
+
 ```python
 Acquire resources.
     Using resources

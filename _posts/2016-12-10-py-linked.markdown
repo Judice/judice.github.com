@@ -1,0 +1,88 @@
+---
+layout:     post
+title:      "链表的反转"
+subtitle:   "非递归 递归"
+date:       2016-12-10
+author:     “Aaron”
+header-img: "img/post-07.jpg"
+tags:
+    - python
+    - 递归
+    - 反转链表
+---
+
+## 链表的反转问题（非递归方式）
+
+定义一个方法（函数），实现输入一个链表的头结点，然后可以反转这个链表的方向，并输出反转之后的链表的头结点。
+
+```python
+class Node():
+    def __init__(self):
+        self.value = None
+        self.next = None
+
+    def __str__(self):
+        return str(self.value)  #self.value可以输出字符串
+```
+
+反转链表，直接的想法，就是把链表中指针的方向反转就可以了，如下图所示：
+
+![linked-list-01](/img/in-post/post-py-version/linked-list-01.png)
+
+假设 i 结点之前，我们把所有的结点的指针都已经反转了，那么自然 i 和以后的结点链接发生了断裂！如下图:
+
+![linked-list-02](/img/in-post/post-py-version/linked-list-02.png)
+
+这样的话，无法继续遍历 i 以后的结点了，那么自然想到，在断链之前，提前保存之前的状态。那么自然想到定义三个指针，分别指向当前结点 i，i 的后继 j，i 的前驱 h 结点。保存断链之前的三个结点的连接状态。然后，假设没问题了，那么继续反转完毕，最后链表的尾结点就是反正链表的头结点了，也就是 next 为 null 的结点，是原始链表的尾结点。
+
+```python
+def reverse_loop(self,head):
+        if head == None or head.next == None:
+            return head
+        prv = None
+        while head:
+            tmp = head.next      #缓存当前节点的向后指针
+            head.next = prv      #反转指针方向
+            prv = head           #下次迭代时的向前指针
+            head = tmp           #下次迭代时的当前节点
+        return prv
+
+```
+
+**注意关于链表问题的常见注意点：**
+
+* 如果输入的头结点是 NULL，或者整个链表只有一个结点的时候
+* 链表断裂的考虑
+
+## 链表的反转问题（递归方式）
+
+递归的方法其实是非常巧的，它利用递归走到链表的末端，然后再更新每一个node的next 值 ，实现链表的反转。而newhead 的值没有发生改变，为该链表的最后一个结点，所以，反转后，我们可以得到新链表的head。
+
+```python
+def reverse_recursion(self,head):
+        if not head or not head.next:
+           return head
+
+        newhead = self.reverse_recursion(head.next)
+
+        head.next.next = head
+        head.next = None
+
+        return newhead
+```
+
+![recursion01](/img/in-post/post-py-version/recursion01.png)
+
+程序刚开始执行，if 语句失效，然后执行newhead = self.reverse_recursion(head.next);第二个结点的指针参数传入递归函数，一直到，最后一个结点的指针参数传入递归函数，if 语句有效not head.next，返回当前的head 给 newhead 指针指向，如图：
+
+![recursion02](/img/in-post/post-py-version/recursion02.png)
+
+其实在递归函数栈内，按照后进先出的顺序，执行一级级的递归函数，返回末位结点给 newhead 之后，执行递归栈里的第二个递归函数，发生如图
+
+![recursion03](/img/in-post/post-py-version/recursion03.png)
+
+返回 newhead，也就是新的反转之后的链表（临时的），然后进入到递归工作栈里的第一个递归函数，如图：
+
+![recursion04](/img/in-post/post-py-version/recursion04.png)
+
+返回 newhead，也就是反转之后的链表，此时递归工作栈的函数全部执行，返回的结点就是反转之后的链表的头结点（之前的尾结点）

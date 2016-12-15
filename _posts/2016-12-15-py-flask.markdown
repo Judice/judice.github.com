@@ -18,7 +18,7 @@ tags:
 
 ## 知识准备
 
-**1. WSGI**
+**WSGI**
 
 通过下面这张图，对web框架所处的位置和WSGI协议有一个直接的认识
 
@@ -27,32 +27,22 @@ tags:
 为了更好的理解WSGI，我们来看一个例子:
 
 ```python
-import enentlet
 from eventlet import wsgi
+import eventlet
 
-def hello(environ, start_response)
-   start_response('200 Ok', [('Content-Type', 'text/plain')])
-   return ['Hello World \r\n']
+def hello(environ, start_response):
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    return ['Hello, World!\r\n']
 wsgi.server(eventlet.listen(()'',8090)), hello)
-
 ```
 
 定义一个hello函数，接受 environ 、start_response 两个参数，当 wsgi.server 调用函数hello时，会自动传递 environ、start_response两个参数，并接受hello函数的返回值，这就是 wsgi 的作用。
 
-就是说，在python的世界里，**通过WSGI约定了web服务器怎么调用web应用程序的代码** ，web应用程序需要符合什么样的规范，只要web应用程序和web服务器都遵守WSGI 协议，那么，web应用程序和web服务器就可以随意的组合。这也就是WSGI存在的原因。
+就是说，在python的世界里，通过WSGI约定了web服务器怎么调用web应用程序的代码 ，web应用程序需要符合什么样的规范，只要web应用程序和web服务器都遵守WSGI 协议，那么，web应用程序和web服务器就可以随意的组合。这也就是WSGI存在的原因。
 
-**2. jinjia2**
+**jinjia2**
 
 Jinja2 是一个现代的，设计者友好的，仿照 Django 模板的 Python 模板语言。 它速度快，被广泛使用，并且提供了可选的沙箱模板执行环境保证安全:
-
-```python
-<title>{% block title %}{% endblock %}</title>
-<ul>
-{% for user in users %}
-  <li><a href="{{ user.url }}">{{ user.username }}</a></li>
-{% endfor %}
-</ul>
-```
 
 最基本的方式就是通过 Template 创建一个模板并渲染它
 
@@ -63,7 +53,7 @@ Jinja2 是一个现代的，设计者友好的，仿照 Django 模板的 Python 
 u'Hello John Doe!'
 ```
 
-**3. Werkzeug**
+**Werkzeug**
 
 Werkzeug 是一个 WSGI 工具包。WSGI 是一个 Web 应用和服务器通信的协议，Web 应用 可以通过 WSGI 一起工作。
 
@@ -202,6 +192,7 @@ def dispatch_request(self):
 如果出现错误，则根据相应的error code，调用不同的错误处理函数。
 
 ## Flask
+
 打开flask.py文件，在Flask.py文件的末尾处，有以下几行代码:
 
 ```python
@@ -229,8 +220,8 @@ def hello():
 
 ```python
 _request_ctx_stack = LocalStack()
-
 ```
+
 正如它LocalStack()的名字所暗示的那样，**_request_ctx_stack** 是一个栈, 显然，一个栈肯定会有push 、pop和top函数，如下所示:
 
 ```python
@@ -326,4 +317,4 @@ g = LocalProxy(lambda: _request_ctx_stack.top.g)
 ```
 
 读者可以自行看一下LocalProxy的源码，LocalProxy仅仅是一个代理（可以想象设计模式中的代理模式）。
-通过LocalStack和LocalProxy这样的Python魔法，每个线程访问当前请求中的数据(request, session)时， 都好像都在访问一个全局变量，但是，互相之间又互不影响。这就是Flask为我们提供的便利，也是我们 选择Flask的理由！
+通过LocalStack和LocalProxy这样的Python魔法，每个线程访问当前请求中的数据(request, session)时， 都好像都在访问一个全局变量，但是，互相之间又互不影响,这就是Flask为我们提供的便利。

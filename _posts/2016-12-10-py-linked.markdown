@@ -85,4 +85,4 @@ def reverse_recursion(self,head):
 
 ![recursion04](/img/in-post/post-py-version/recursion04.png)
 
-返回 newhead，也就是反转之后的链表，此时递归工作栈的函数全部执行，返回的结点就是反转之后的链表的头结点（之前的尾结点）
+返回 newhead，也就是反转之后的链表，此时递归工作栈的函数全部执行，返回的结点就是反转之后的链表的头结点(之前的尾节点)

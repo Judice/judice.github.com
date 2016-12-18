@@ -1,0 +1,217 @@
+---
+layout:     post
+title:      "python 装饰器及标准库functools中的wraps"
+subtitle:   "装饰器 wraps"
+date:       2016-12-18
+author:     “Aaron”
+header-img: "img/post-09.jpg"
+tags:
+    - python
+    - 装饰器
+    - wraps
+---
+
+# python装饰器
+
+1. 装饰器不带参数的情况下
+
+```python
+def deco(func):
+    def _deco():
+        print("before myfunc() called.")
+        func()
+        print("  after myfunc() called.")
+    return _deco
+
+@deco
+def myfunc():
+    print(" myfunc() called.")
+
+myfunc()
+
+#输出结果
+before myfunc() called.
+myfunc() called.
+after myfunc() called.
+```
+
+这个@语法糖的作用是:
+
+```python
+def myfunc():
+    print(" myfunc() called.")
+myfunc = deco(myfunc)
+```
+
+2. 对参数数量不确定的函数进行装饰
+
+```python
+# coding=utf-8
+def deco(func):
+    def _deco(*args, **kwargs):   # 参数用(*args, **kwargs)，自动适应变参和命名参数
+        print "before %s.called" % func.__name__
+        res = func(*args,**kwargs)         # 此处一定要传递参数
+        print "after %s.called and result is %s" % (func.__name__, res)
+    return _deco
+
+@deco
+def myfunc1(a, b):
+    print "myfunc1(%s,%s).called" %(a,b)
+    return a+b
+
+@deco
+def myfunc2(a,b,c):
+    print "myfunc2(%s,%s,%s).called" %(a,b,c)
+    return a+b+c
+
+myfunc1(1,2)
+myfunc2(1,2,3)
+print myfunc1.__name__
+print myfunc2.__name__
+
+#输出结果
+before myfunc1.called
+myfunc1(1,2).called
+after myfunc1.called and result is 3
+before myfunc2.called
+myfunc2(1,2,3).called
+after myfunc2.called and result is 6
+_deco
+_deco
+```
+
+**注意 print myfunc1.__name__ 的输出结果变为_deco，运用wraps可以修复装饰器的这一副作用**
+
+3. 让装饰器带参数
+
+```python
+# coding=utf-8
+def deco(arg):
+    def _deco(func):
+        def __deco():
+            print 'before %s called %s' %(func.__name__, arg)
+            func()
+            print 'after %s called [%s]' %(func.__name__, arg)
+        return __deco
+    return _deco
+
+@deco('module1')   # 装饰器中传入字符串
+def myfunc1():
+    print 'myfunc1 called'
+
+@deco('module2')
+def myfunc2():
+    print 'myfunc2 called'
+
+myfunc1()
+myfunc2()
+
+# 输出结果
+before myfunc1 called module1
+myfunc1 called
+after myfunc1 called [module1]
+before myfunc2 called module2
+myfunc2 called
+after myfunc2 called [module2]
+```
+
+4. 让装饰器带 类 参数
+
+```python
+# coding=utf-8
+class locker():                # 装饰器带类参数
+    def __init__(self):
+        print 'locker.__init__ should not be called'
+
+    @staticmethod
+    def acquire():
+        print 'locker.acquire called'
+
+    @staticmethod
+    def release():
+        print 'locker.release called'
+
+def deco(cls):
+    # cls 必须实现acquire和release静态方法
+    def _deco(func):
+        def __deco():
+            print 'before %s called [%s]' % (func.__name__ , cls)
+            cls.acquire()
+            try:
+                return func()
+            finally:
+                cls.release()
+        return __deco
+    return _deco
+
+@deco(locker)
+def myfunc():
+    print 'myfunc called'
+
+myfunc()
+
+#输出结果
+before myfunc called [__main__.locker]
+locker.acquire called
+myfunc called
+locker.release called
+```
+
+# wraps的使用
+
+```python
+from functools import wraps
+def my_decorator(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        print 'Calling decorated function'
+        return f(*args, **kwargs)
+    return wrapper
+@my_decorator
+def example():
+     """Docstring"""
+     print 'Called example function'
+example()
+print example.__name__
+print example.__doc__
+
+#输出结果
+Calling decorated function
+Called example function
+example
+Docstring
+```
+
+**这样就保留了原函数名称属性和doc**
+
+标准库中函数wraps,可以这样理解:
+
+```python
+def wraps(f):
+    def _f(*args,**kwargs):
+        f(*args,**kwargs)
+    _f.__name__ = f.__name
+    _f.__doc__  = f.__doc__
+    return _f
+```
+
+# python的__name__和__doc__属性
+
+1. __name__属性
+__name__属性 用于判断当前模块是不是程序入口，如果当前程序正在使用，__name__的值为__main__
+
+2. __doc__属性
+模块本身是一个对象，而每个对象都会有一个__doc__属性,该属性用于描述该对象的作用
+
+```python
+class MyClass:
+    "string"
+    def printSay(self):
+        "welcome"
+        print ' welcome '
+print MyClass.__doc__
+print MyClass.printSay.__doc__
+
+string
+welcome
+```

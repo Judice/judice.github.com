@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "pip 使用镜像源 virtualenv"
-subtitle:   "镜像源"
+subtitle:   "镜像源 virtualenv"
 date:       2016-12-18
 author:     “Aaron”
 header-img: "img/post-09.jpg"

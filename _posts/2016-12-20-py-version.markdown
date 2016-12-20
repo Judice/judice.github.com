@@ -1,8 +1,8 @@
 ---
 layout:     post
 title:      "值传递与引用传递 深拷贝与浅拷贝"
-subtitle:   ""
-date:       2016-11-19
+subtitle:   "内存 引用"
+date:       2016-12-20
 author:     “Aaron”
 header-img: "img/post-11.jpg"
 tags:

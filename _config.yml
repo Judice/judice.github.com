@@ -85,16 +85,16 @@ friends: [
         title: "Aaron",
         href: "https://judice.github.io"
     },{
-        title: "Stark",
+        title: "",
         href: "#"
     },{
-        title: "Lannister",
+        title: "",
         href: "#"
     },{
-        title: "Baratheon",
+        title: "",
         href: "#"
     },{
-        title: "Martell",
+        title: "",
         href: "#"
     }
 ]

@@ -300,6 +300,7 @@ def __setattr__(self, name, value):
 在__setattr__中，通过__ident_func__获取到了一个key，然后进行赋值。自此，我们可以知道， LocalStack是一个全局字典，或者说是一个名字空间。这个名字空间是所有线程共享的。 当我们访问字典中的某个元素的时候，会通过__getattr__访问,先通过线程id， 找当前这个线程的数据，然后进行访问
 
 字段的内容如下：
+
 ```python
 {'thread_id':{'stack':[]}}
 
@@ -316,5 +317,5 @@ session = LocalProxy(lambda: _request_ctx_stack.top.session)
 g = LocalProxy(lambda: _request_ctx_stack.top.g)
 ```
 
-读者可以自行看一下LocalProxy的源码，LocalProxy仅仅是一个代理（可以想象设计模式中的代理模式）。
+LocalProxy仅仅是一个代理（可以想象设计模式中的代理模式）。
 通过LocalStack和LocalProxy这样的Python魔法，每个线程访问当前请求中的数据(request, session)时， 都好像都在访问一个全局变量，但是，互相之间又互不影响,这就是Flask为我们提供的便利。

@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "蛇形矩阵、蛇形填数问题"
+title:      "蛇形矩阵、蛇形填数、蛇形遍历问题"
 subtitle:   ""
 date:       2017-01-03
 author:     “Aaron”
@@ -8,11 +8,10 @@ header-img: "img/post-13.jpg"
 tags:
     - 蛇形矩阵
     - 蛇形填数
+    - 蛇形遍历
 ---
 
 ## 蛇形矩阵问题
-
-
 
 ```python
 while True:  
@@ -151,9 +150,26 @@ while True:
 ```
 
 ```python
-输入 3，4
+输入 3 、4
 1   2   3
 10  11  4
 9   12  5
 8   7   6
+```
+
+## 蛇形遍历
+
+```python
+# coding=utf-8
+def snake_list(origin_list):
+    biggest_len = max(len(i) for i in origin_list) # 取最大长度
+
+    result = []
+    for sub_index in range(biggest_len):
+        for sub_list in origin_list:
+            if sub_index >= len(sub_list):
+                continue
+            result.append(sub_list[sub_index])
+        origin_list.reverse()  # 反转二维矩阵保证蛇形遍历
+    return result
 ```

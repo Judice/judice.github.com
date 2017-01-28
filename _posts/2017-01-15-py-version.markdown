@@ -4,7 +4,7 @@ title:      "二叉树问题"
 subtitle:   "遍历、反转"
 date:       2017-01-15
 author:     “Aaron”
-header-img: "img/post-01.jpg"
+header-img: "img/post-14.jpg"
 tags:
     - 二叉树
     - 遍历

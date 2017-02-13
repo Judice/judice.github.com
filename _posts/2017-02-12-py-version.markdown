@@ -4,7 +4,7 @@ title:      "Python的协程、线程、并发、并行"
 subtitle:   "协程的概述"
 date:       2017-02-12
 author:     “Aaron”
-header-img: "img/post-14.jpg"
+header-img: "img/post-16.jpg"
 tags:
     - 协程
     - 线程

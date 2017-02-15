@@ -32,6 +32,7 @@ tags:
 - python的协程与生成器的关系
 
 Python对协程的支持还非常有限，用在generator中的yield可以一定程度上实现协程，yield保存上下文，主动交出控制权的特性已经很接近协程了。
+
 * yield从语句变为表达式, 这个是为了传值方便
 * 加入send()方法用于在恢复生成器的时候，传入值
 * 加入close()方法用于结束协程
@@ -201,13 +202,13 @@ Compute 1 + 2...
 ```
 ![py-01](/img/in-post/post-py-version/py-01.png)
 
-这张图（来自: PyDocs: 18.5.3. Tasks and coroutines）清楚地描绘了由事件循环调度的协程的执行过程，上面的例子中事件循环的队列里只有一个协程，如果要与上一部分中线程实现的并发的例子相比较，只要向事件循环的任务队列中添加协程即可：
+这张图清楚地描绘了由事件循环调度的协程的执行过程，上面的例子中事件循环的队列里只有一个协程，如果要与上一部分中线程实现的并发的例子相比较，只要向事件循环的任务队列中添加协程即可：
 
 ```python
 import asyncio  
 import time
 
-# 上面的例子为了从生成器过度，下面全部改用 async/await 语法
+# 上面的例子为了从生成器过渡，下面全部改用 async/await 语法
 async def _sum(x, y):  
     print("Compute {} + {}...".format(x, y))
     await asyncio.sleep(2.0)

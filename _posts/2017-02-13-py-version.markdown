@@ -125,7 +125,7 @@ void UserEventHandler::handle_event() {
     Reactor.register(new UserEventHandler(socket));
 }
 ```
-用户需要重写EventHandler的handle_event函数进行读取数据、处理数据的工作，用户线程只需要将自己的EventHandler注册到Reactor即可。Reactor中handle_events事件循环的伪代码大致如下。
+用户需要重写EventHandler的handle_event函数进行读取数据、处理数据的工作，**用户线程只需要将自己的EventHandler注册到Reactor即可**。Reactor中handle_events事件循环的伪代码大致如下。
 
 ```python
 Reactor::handle_events() {
@@ -141,6 +141,31 @@ Reactor::handle_events() {
 **事件循环不断地调用select获取被激活的socket，然后根据获取socket对应的EventHandler，执行器handle_event函数即可。**
 
 IO多路复用是最常使用的IO模型，但是其异步程度还不够“彻底”，因为它使用了会阻塞线程的select系统调用。因此IO多路复用只能称为异步阻塞IO，而非真正的异步IO。
+
+## Reactor模型结构
+
+![io-08](/img/in-post/post-py-version/io-08.png)
+
+- Handles ：表示操作系统管理的资源，即操作系统中的句柄，是对资源在操作系统层面上的一种抽象，它可以是打开的文件、一个连接(Socket)、Timer等。由于Reactor模式一般使用在网络编程中，因而这里一般指Socket Handle，即一个网络连接。这个Channel注册到Synchronous Event Demultiplexer中，以监听Handle中发生的事件，对ServerSocketChannnel可以是CONNECT事件，对SocketChannel可以是READ、WRITE、CLOSE事件等。
+
+- Synchronous Event Demultiplexer ：同步事件分离器，阻塞等待Handles中的事件发生,**这个模块一般使用操作系统的select来实现**。
+
+- Initiation Dispatcher ：**用于管理Event Handler，即EventHandler的容器，用以注册、移除EventHandler等**；另外，它还作为Reactor模式的入口调用Synchronous Event Demultiplexer的select方法以阻塞等待事件返回，当阻塞等待返回时，根据事件发生的Handle将其分发给对应的Event Handler处理，即回调EventHandler中的handle_event()方法。
+
+- Event Handler ：定义事件处理方法：handle_event()，以供InitiationDispatcher回调使用，get_handle()方法以使得Reactor建立起句柄和事件处理器的关联。
+
+- Concrete Event Handler ：事件处理器的实际实现，而且绑定了一个Handle。
+
+## Reactor模块之间的交互
+
+![io-09](/img/in-post/post-py-version/io-09.png)
+
+1. 初始化InitiationDispatcher，并初始化一个Handle到EventHandler的Map。
+2. 注册EventHandler到InitiationDispatcher中，每个EventHandler包含对相应Handle的引用，从而建立Handle到EventHandler的映射（Map）。
+3. 调用InitiationDispatcher的handle_events()方法以启动Event Loop。在Event Loop中，调用select()方法（Synchronous Event Demultiplexer）阻塞等待Event发生。
+4. 当某个或某些Handle的Event发生后，select()方法返回，InitiationDispatcher根据返回的Handle找到注册的EventHandler，并回调该EventHandler的handle_events()方法。
+5. 在EventHandler的handle_events()方法中还可以向InitiationDispatcher中注册新的Eventhandler，比如对AcceptorEventHandler来，当有新的client连接时，它会产生新的EventHandler以处理新的连接，并注册到InitiationDispatcher中。
+
 
 ## 异步IO
 
